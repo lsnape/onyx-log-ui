@@ -6,10 +6,10 @@
             [duct.middleware.not-found :refer [wrap-not-found]]
             [duct.middleware.route-aliases :refer [wrap-route-aliases]]
             [meta-merge.core :refer [meta-merge]]
-            [ring.component.jetty :refer [jetty-server]]
+            [onyx-log-ui.component.aleph :refer [aleph-server]]
+            [onyx-log-ui.endpoint.example :refer [example-endpoint]]
             [ring.middleware.defaults :refer [wrap-defaults site-defaults]]
-            [ring.middleware.webjars :refer [wrap-webjars]]
-            [onyx-log-ui.endpoint.example :refer [example-endpoint]]))
+            [ring.middleware.webjars :refer [wrap-webjars]]))
 
 (def base-config
   {:app {:middleware [[wrap-not-found :not-found]
@@ -24,7 +24,7 @@
   (let [config (meta-merge base-config config)]
     (-> (component/system-map
          :app  (handler-component (:app config))
-         :http (jetty-server (:http config))
+         :http (aleph-server (:http config))
          :example (endpoint-component example-endpoint))
         (component/system-using
          {:http [:app]
