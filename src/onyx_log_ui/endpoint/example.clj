@@ -1,11 +1,10 @@
 (ns onyx-log-ui.endpoint.example
   (:require [compojure.core :refer :all]
-            [clojure.java.io :as io]))
+            [clojure.java.io :as io]
+            [yada.yada :refer [yada]]))
 
 (defn example-endpoint [config]
-  ["example" (fn [req]
-               (ring.util.response/response (str "this is an example")))])
+  ["example" (yada "this is an example")])
 
 (defn not-found [config]
-  [true (fn [req]
-          (ring.util.response/not-found "Not found."))])
+  [true (yada.protocols/as-resource nil)])
