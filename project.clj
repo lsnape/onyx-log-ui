@@ -1,6 +1,6 @@
 (defproject onyx-log-ui "0.1.0-SNAPSHOT"
-  :description "FIXME: write description"
-  :url "http://example.com/FIXME"
+  :description "Real-time Onyx cluster monitoring"
+  :url "https://github.com/lsnape/onyx-log-ui"
   :min-lein-version "2.0.0"
   :dependencies [[aleph "0.4.1-beta4"]
                  [bidi "1.25.1"]
