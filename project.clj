@@ -3,6 +3,7 @@
   :url "http://example.com/FIXME"
   :min-lein-version "2.0.0"
   :dependencies [[aleph "0.4.1-beta4"]
+                 [bidi "1.25.1"]
                  [org.clojure/clojure "1.8.0"]
                  [org.clojure/clojurescript "1.7.228"]
                  [com.stuartsierra/component "0.3.0"]
@@ -11,11 +12,7 @@
                  [environ "1.0.2"]
                  [meta-merge "0.1.1"]
                  [ring "1.4.0"]
-                 [ring/ring-defaults "0.1.5"]
-                 [ring-jetty-component "0.3.0"]
-                 [ring-webjars "0.1.1"]
-                 [org.slf4j/slf4j-nop "1.7.14"]
-                 [org.webjars/normalize.css "3.0.2"]]
+                 [org.slf4j/slf4j-nop "1.7.14"]]
   :plugins [[lein-environ "1.0.2"]
             [lein-gen "0.2.2"]
             [lein-cljsbuild "1.1.2"]]
