@@ -6,6 +6,7 @@
                  [bidi "1.25.1"]
                  [org.clojure/clojure "1.8.0"]
                  [org.clojure/clojurescript "1.7.228"]
+                 [org.onyxplatform/onyx "0.8.11"]
                  [com.stuartsierra/component "0.3.0"]
                  [compojure "1.4.0"]
                  [duct "0.5.8"]

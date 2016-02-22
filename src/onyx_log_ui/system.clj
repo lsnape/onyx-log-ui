@@ -5,20 +5,22 @@
             [duct.middleware.not-found :refer [wrap-not-found]]
             [duct.middleware.route-aliases :refer [wrap-route-aliases]]
             [meta-merge.core :refer [meta-merge]]
+            [onyx-log-ui.component.onyx-log :refer [onyx-log-client-component]]
             [onyx-log-ui.component.aleph :refer [aleph-server]]
             [onyx-log-ui.component.bidi :refer [bidi-handler-component]]
             [onyx-log-ui.endpoint.example :refer [example-endpoint not-found]]))
 
 (def base-config
-  {})
+  {:zookeeper-address "192.168.99.100:32772"})
 
 (defn new-system [config]
   (let [config (meta-merge base-config config)]
     (-> (component/system-map
-         :app  (bidi-handler-component)
+         :app (bidi-handler-component)
          :http (aleph-server (:http config))
+         :onyx-log-client (onyx-log-client-component config)
          :example (endpoint-component example-endpoint)
          :not-found (endpoint-component not-found))
         (component/system-using
          {:http [:app]
-          :app  [:example :not-found]}))))
+          :app [:example :not-found]}))))
