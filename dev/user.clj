@@ -16,7 +16,7 @@
   {:app {:middleware [wrap-stacktrace]}
    :figwheel
    {:css-dirs ["resources/onyx_log_ui/public/css"]
-    :builds   [{:source-paths ["src" "dev"]
+    :builds   [{:source-paths ["src/cljs" "dev"]
                 :build-options
                 {:optimizations :none
                  :main "cljs.user"
