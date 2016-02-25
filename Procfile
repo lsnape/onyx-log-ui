@@ -1,1 +1,1 @@
-web: java -jar target/onyx-log-ui-standalone.jar
+web: java -jar target/uberjar/onyx-log-ui-standalone.jar
