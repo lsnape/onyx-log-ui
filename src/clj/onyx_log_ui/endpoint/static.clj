@@ -1,9 +1,14 @@
 (ns onyx-log-ui.endpoint.static
-  (:require [bidi.ring :refer [->ResourcesMaybe]]
-            [yada.protocols :refer [as-resource]]))
+  (:require [bidi.ring :as ring :refer [resources-maybe ->Files]]
+            [clojure.java.io :as io]
+            [yada.protocols :refer [as-resource]]
+            [yada.yada :refer [yada]]))
+
+(def index-handler
+  (yada (as-resource
+           (io/resource "onyx_log_ui/public/index.html"))))
 
 (defn static-endpoint [config]
-  ["" (bidi.ring/->ResourcesMaybe {:prefix "onyx_log_ui/public/"})])
-
-(defn not-found [config]
-  [true nil])
+  ["" [["" index-handler]
+       ["" (resources-maybe {:prefix "onyx_log_ui/public/"})]
+       [true (as-resource nil)]]])
