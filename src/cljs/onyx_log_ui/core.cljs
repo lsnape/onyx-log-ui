@@ -10,5 +10,4 @@
 
 (def hello (om/factory HelloWorld))
 
-(defn init! []
-  (js/ReactDOM.render (hello) (gdom/getElement "app")))
+(js/ReactDOM.render (hello) (gdom/getElement "app"))
