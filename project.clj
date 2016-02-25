@@ -6,6 +6,7 @@
                  [bidi "1.25.1"]
                  [org.clojure/clojure "1.8.0"]
                  [org.clojure/clojurescript "1.7.228"]
+                 [org.omcljs/om "1.0.0-alpha22"]
                  [org.onyxplatform/onyx "0.8.11"]
                  [com.stuartsierra/component "0.3.0"]
                  [compojure "1.4.0"]
@@ -24,11 +25,12 @@
   :uberjar-name "onyx-log-ui-standalone.jar"
   :target-path "target/%s/"
   :resource-paths ["resources" "target/cljsbuild"]
+  :source-paths ["src/clj" "src/cljs"]
   :prep-tasks [["javac"] ["cljsbuild" "once"] ["compile"]]
   :cljsbuild
   {:builds
    {:main {:jar true
-           :source-paths ["src"]
+           :source-paths ["src/cljs"]
            :compiler {:output-to "target/cljsbuild/onyx_log_ui/public/js/main.js"
                       :optimizations :advanced}}}}
   :aliases {"gen"   ["generate"]
