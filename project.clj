@@ -2,6 +2,7 @@
   :description "Real-time Onyx cluster monitoring"
   :url "https://github.com/lsnape/onyx-log-ui"
   :min-lein-version "2.0.0"
+
   :dependencies [[aleph "0.4.1-beta4"]
                  [bidi "1.25.1"]
                  [org.clojure/clojure "1.8.0"]
@@ -14,11 +15,14 @@
                  [environ "1.0.2"]
                  [meta-merge "0.1.1"]
                  [ring "1.4.0"]
+                 [suspendable "0.1.0"]
                  [org.slf4j/slf4j-nop "1.7.14"]
                  [yada "1.1.0-20160219.181822-27"]]
+  
   :plugins [[lein-environ "1.0.2"]
             [lein-gen "0.2.2"]
             [lein-cljsbuild "1.1.2"]]
+  
   :generators [[duct/generators "0.5.8"]]
   :duct {:ns-prefix onyx-log-ui}
   :main ^:skip-aot onyx-log-ui.main
@@ -27,35 +31,35 @@
   :resource-paths ["resources" "target/cljsbuild"]
   :source-paths ["src/clj" "src/cljs"]
   :prep-tasks [["javac"] ["cljsbuild" "once"] ["compile"]]
-  :cljsbuild
-  {:builds
-   {:main {:jar true
-           :source-paths ["src/cljs"]
-           :compiler {:output-to "target/cljsbuild/onyx_log_ui/public/js/main.js"
-                      :optimizations :advanced}}}}
+  
+  :cljsbuild {:builds
+              {:main {:jar true
+                      :source-paths ["src/cljs"]
+                      :compiler {:output-to "target/cljsbuild/onyx_log_ui/public/js/main.js"
+                                 :optimizations :advanced}}}}
   :aliases {"gen"   ["generate"]
             "setup" ["do" ["generate" "locals"]]
             "deploy" ["do"
                       ["vcs" "assert-committed"]
                       ["vcs" "push" "heroku" "master"]]}
-  :profiles
-  {:dev  [:project/dev  :profiles/dev]
-   :test [:project/test :profiles/test]
-   :repl {:resource-paths ^:replace ["resources" "target/figwheel"]
-          :prep-tasks     ^:replace [["javac"] ["compile"]]}
-   :uberjar {:aot :all}
-   :profiles/dev  {}
-   :profiles/test {}
-   :project/dev   {:dependencies [[reloaded.repl "0.2.1"]
-                                  [org.clojure/tools.namespace "0.2.11"]
-                                  [org.clojure/tools.nrepl "0.2.12"]
-                                  [eftest "0.1.0"]
-                                  [kerodon "0.7.0"]
-                                  [com.cemerick/piggieback "0.2.1"]
-                                  [duct/figwheel-component "0.3.1"]
-                                  [figwheel "0.5.0-1"]]
-                   :source-paths ["dev"]
-                   :repl-options {:init-ns user
-                                  :nrepl-middleware [cemerick.piggieback/wrap-cljs-repl]}
-                   :env {:port 3000}}
-   :project/test  {}})
+  
+  :profiles {:dev  [:project/dev  :profiles/dev]
+             :test [:project/test :profiles/test]
+             :repl {:resource-paths ^:replace ["resources" "target/figwheel"]
+                    :prep-tasks     ^:replace [["javac"] ["compile"]]}
+             :uberjar {:aot :all}
+             :profiles/dev  {}
+             :profiles/test {}
+             :project/dev   {:dependencies [[reloaded.repl "0.2.1"]
+                                            [org.clojure/tools.namespace "0.2.11"]
+                                            [org.clojure/tools.nrepl "0.2.12"]
+                                            [eftest "0.1.0"]
+                                            [kerodon "0.7.0"]
+                                            [com.cemerick/piggieback "0.2.1"]
+                                            [duct/figwheel-component "0.3.1"]
+                                            [figwheel "0.5.0-1"]]
+                             :source-paths ["dev"]
+                             :repl-options {:init-ns user
+                                            :nrepl-middleware [cemerick.piggieback/wrap-cljs-repl]}
+                             :env {:port 3000}}
+             :project/test  {}})
