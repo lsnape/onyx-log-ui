@@ -3,7 +3,7 @@
             [com.stuartsierra.component :as component]))
 
 (defn- find-endpoint-keys [component]
-  (sort (map key (filter (comp :routes val) component))))
+  (map key (filter (comp :routes val) component)))
 
 (defn- find-routes [component]
   (map #(:routes (get component %))

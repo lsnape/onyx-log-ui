@@ -5,7 +5,7 @@
             [onyx-log-ui.component
              [aleph :refer [aleph-server]]
              [bidi :refer [bidi-handler-component]]]
-            [onyx-log-ui.endpoint.static :refer [static-endpoint]]))
+            [onyx-log-ui.endpoint.endpoints :as endpoint]))
 
 (def base-config
   {:zookeeper-address "192.168.99.100:32772"})
@@ -16,7 +16,9 @@
          :app (bidi-handler-component)
          :http (aleph-server (:http config))
          #_#_ :onyx-log-client (onyx-log-client-component config)
-         :static (endpoint-component static-endpoint))
+         :index (endpoint-component endpoint/index-endpoint)
+         :static (endpoint-component endpoint/static-endpoint)
+         :not-found (endpoint-component endpoint/not-found-endpoint))
         (component/system-using
          {:http [:app]
-          :app [:static]}))))
+          :app [:index :static :not-found]}))))
