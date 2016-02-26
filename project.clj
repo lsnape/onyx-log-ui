@@ -5,6 +5,7 @@
 
   :dependencies [[aleph "0.4.1-beta4"]
                  [bidi "1.25.1"]
+                 [cljsjs/react-dom "0.14.3-1"]
                  [org.clojure/clojure "1.8.0"]
                  [org.clojure/clojurescript "1.7.228"]
                  [org.omcljs/om "1.0.0-alpha22"]
@@ -15,6 +16,7 @@
                  [environ "1.0.2"]
                  [meta-merge "0.1.1"]
                  [ring "1.4.0"]
+                 [sablono "0.6.2"]
                  [suspendable "0.1.0"]
                  [org.slf4j/slf4j-nop "1.7.14"]
                  [yada "1.1.0-20160219.181822-27"]]
