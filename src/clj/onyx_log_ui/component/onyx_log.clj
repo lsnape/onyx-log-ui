@@ -55,17 +55,20 @@
   (-> (slurp (io/resource "log-dump.edn"))
       read-string))
 
+(defn stream-test-log!
+  [ch]
+  (future
+    (doseq [{:keys [message-id] :as entry} (reverse (:log-entries log-dump))]
+      (Thread/sleep 100)
+      (put! ch {:entry entry
+                :replica-state (get-in log-dump [:replica-states message-id])}))))
+
 (defrecord OnyxLogClientMock []
   component/Lifecycle
   (start [component]
     (if-not (:onyx-log-ch component)
-      (let [ch (chan 1000)]
-        (doseq [{:keys [message-id] :as entry} (:log-entries log-dump)]
-          (prn {:entry entry, :replica-state (get-in log-dump [:replica-states message-id])})
-          (put! ch {:entry entry
-                    :replica-state (get-in log-dump [:replica-states message-id])}))
-        (assoc component :onyx-log-ch ch)
-        component)))
+      (assoc component :onyx-log-ch (chan 1000))
+      component))
   (stop [component]
     (if-let [ch (:onyx-log-ch component)]
       (do (close! ch)

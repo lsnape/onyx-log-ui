@@ -8,7 +8,7 @@
                  [cljsjs/react-dom "0.14.3-1"]
                  [org.clojure/clojure "1.8.0"]
                  [org.clojure/clojurescript "1.7.228"]
-                 [org.omcljs/om "1.0.0-alpha22"]
+                 [org.omcljs/om "1.0.0-alpha23"]
                  [org.onyxplatform/onyx "0.8.11"]
                  [com.stuartsierra/component "0.3.0"]
                  [compojure "1.4.0"]

@@ -16,10 +16,12 @@
     (-> (component/system-map
          :app (bidi-handler-component)
          :http (aleph-server (:http config))
-         #_#_ :onyx-log-client (onyx-log-client-component config)
+         :onyx-log-client (onyx-log-client-component config)
+         :log-stream (endpoint-component endpoint/onyx-log-stream-endpoint)
          :index (endpoint-component endpoint/index-endpoint)
          :static (endpoint-component endpoint/static-endpoint)
          :not-found (endpoint-component endpoint/not-found-endpoint))
         (component/system-using
          {:http [:app]
-          :app [:index :static :not-found]}))))
+          :app [:index :static :log-stream :not-found]
+          :log-stream [:onyx-log-client]}))))
