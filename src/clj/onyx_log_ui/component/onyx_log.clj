@@ -1,8 +1,9 @@
 (ns onyx-log-ui.component.onyx-log
-  (:require [clojure.core.async :refer [chan close! <!!]]
-            [com.stuartsierra.component :as component]
-            [onyx.api :refer [subscribe-to-log shutdown-env]]
-            [onyx.extensions :as extensions]))
+  (:require [onyx.api :refer [subscribe-to-log shutdown-env]]
+            [onyx.extensions :as extensions]
+            [clojure.core.async :refer [chan put! close! <!!]]
+            [clojure.java.io :as io]
+            [com.stuartsierra.component :as component]))
 
 (defn peer-config [zookeeper-address]
   {:onyx/id "dev-tenancy"
@@ -20,6 +21,7 @@
   (try
     (loop [rep replica]
       (when-let [entry (<!! ch)]
+        ;; TODO: make apply-log-entry a chan xform?
         (let [result (extensions/apply-log-entry entry rep)]
           (println (str "=== entry id " (:message-id entry) " ==="))
           (println (str "Function: " (:fn entry)))
@@ -49,5 +51,27 @@
           (dissoc component :onyx-log :onyx-log-ch))
       component)))
 
+(def log-dump
+  (-> (slurp (io/resource "log-dump.edn"))
+      read-string))
+
+(defrecord OnyxLogClientMock []
+  component/Lifecycle
+  (start [component]
+    (if-not (:onyx-log-ch component)
+      (let [ch (chan 1000)]
+        (doseq [{:keys [message-id] :as entry} (:log-entries log-dump)]
+          (prn {:entry entry, :replica-state (get-in log-dump [:replica-states message-id])})
+          (put! ch {:entry entry
+                    :replica-state (get-in log-dump [:replica-states message-id])}))
+        (assoc component :onyx-log-ch ch)
+        component)))
+  (stop [component]
+    (if-let [ch (:onyx-log-ch component)]
+      (do (close! ch)
+          (dissoc component :onyx-log-ch))
+      component)))
+
 (defn onyx-log-client-component [options]
-  (map->OnyxLogClient options))
+  ;; (map->OnyxLogClient options)
+  (->OnyxLogClientMock))

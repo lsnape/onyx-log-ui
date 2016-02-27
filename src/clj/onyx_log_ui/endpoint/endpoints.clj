@@ -5,8 +5,7 @@
             [yada.yada :refer [yada]]))
 
 (defn index-endpoint [config]
-  ["" (yada (as-resource
-             (io/resource "onyx_log_ui/public/index.html")))])
+  ["" (yada (io/resource "onyx_log_ui/public/index.html"))])
 
 (defn static-endpoint [config]
   ["" (resources-maybe {:prefix "onyx_log_ui/public/"})])

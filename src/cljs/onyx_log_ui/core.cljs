@@ -19,7 +19,7 @@
     [:log-entry/by-id message-id])
   static om/IQuery
   (query [this]
-    '[:message-id :fn :created-at])
+    [:message-id :fn :created-at])
   Object
   (render [this]
     (let [props (om/props this)]
