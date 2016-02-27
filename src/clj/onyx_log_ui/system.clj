@@ -5,7 +5,8 @@
             [onyx-log-ui.component
              [aleph :refer [aleph-server]]
              [bidi :refer [bidi-handler-component]]]
-            [onyx-log-ui.endpoint.endpoints :as endpoint]))
+            [onyx-log-ui.endpoint.endpoints :as endpoint]
+            [onyx-log-ui.component.onyx-log :refer [onyx-log-client-component]]))
 
 (def base-config
   {:zookeeper-address "192.168.99.100:32772"})
