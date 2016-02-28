@@ -1,7 +1,7 @@
 (ns onyx-log-ui.component.onyx-log
   (:require [onyx.api :refer [subscribe-to-log shutdown-env]]
             [onyx.extensions :as extensions]
-            [clojure.core.async :refer [chan put! close! <!!]]
+            [clojure.core.async :refer [chan put! close! <!! thread]]
             [clojure.java.io :as io]
             [com.stuartsierra.component :as component]))
 
@@ -51,30 +51,16 @@
           (dissoc component :onyx-log :onyx-log-ch))
       component)))
 
+(defn onyx-log-client-component [zookeeper-address]
+  (->OnyxLogClient zookeeper-address))
+
 (def log-dump
   (-> (slurp (io/resource "log-dump.edn"))
       read-string))
 
-(defn stream-test-log!
-  [ch]
-  (future
+(defn stream-test-log! [ch]
+  (thread
     (doseq [{:keys [message-id] :as entry} (reverse (:log-entries log-dump))]
       (Thread/sleep 100)
       (put! ch {:entry entry
                 :replica-state (get-in log-dump [:replica-states message-id])}))))
-
-(defrecord OnyxLogClientMock []
-  component/Lifecycle
-  (start [component]
-    (if-not (:onyx-log-ch component)
-      (assoc component :onyx-log-ch (chan 1000))
-      component))
-  (stop [component]
-    (if-let [ch (:onyx-log-ch component)]
-      (do (close! ch)
-          (dissoc component :onyx-log-ch))
-      component)))
-
-(defn onyx-log-client-component [options]
-  ;; (map->OnyxLogClient options)
-  (->OnyxLogClientMock))
