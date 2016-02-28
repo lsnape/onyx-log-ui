@@ -9,4 +9,9 @@
 
 .log-viewport {
     margin: 1em;
+    cursor: default;
+}
+
+div.log-entry:hover {
+    background-color: #42afe3;
 }

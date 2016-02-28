@@ -19,9 +19,13 @@
   (render [this]
     (let [props (om/props this)]
       (html
-       [:div.media
-        [:div.container
-         (name (:fn props))]]))))
+       [:div.log-entry.media {:on-click
+                              (fn [_]
+                                (prn (:message-id props)))}
+        [:div.media-content
+         (name (:fn props))
+         [:br]
+         [:small (:created-at props)]]]))))
 
 (def log-entry
   (om/factory LogEntry {:keyfn :message-id}))
